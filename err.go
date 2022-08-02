@@ -16,8 +16,6 @@ type Error struct {
 	msg string
 }
 
-var defaultErrMsgMap sync.Map
-
 func (e *Error) Error() string {
 	return fmt.Sprintf("code:%d msg:%s", e.code, e.msg)
 }
@@ -37,6 +35,8 @@ func GetErrCode(err error) ErrCode {
 func NewError(code ErrCode) *Error {
 	return NewErrorWithMsg(code, getErrMsgDefaultEmpty(code))
 }
+
+var defaultErrMsgMap sync.Map
 
 func getErrMsgDefaultEmpty(code ErrCode) string {
 	msg, ok := defaultErrMsgMap.Load(code)
