@@ -20,6 +20,14 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("code:%d msg:%s", e.code, e.msg)
 }
 
+func (e *Error) GetErrMsg() string {
+	return e.msg
+}
+
+func (e *Error) GetErrCode() ErrCode {
+	return e.code
+}
+
 func NewErrorWithMsg(code ErrCode, msg string) *Error {
 	return &Error{code: code, msg: msg}
 }
@@ -32,13 +40,26 @@ func GetErrCode(err error) ErrCode {
 	return ErrCodeUnknown
 }
 
+func GetErrMsg(err error) string {
+	if appErr, ok := err.(*Error); ok {
+		return appErr.msg
+	}
+
+	return err.Error()
+}
+
+func IsErr(err error) bool {
+	_, ok := err.(*Error)
+	return ok
+}
+
 func NewError(code ErrCode) *Error {
-	return NewErrorWithMsg(code, getErrMsgDefaultEmpty(code))
+	return NewErrorWithMsg(code, getDefaultErrMsgDefaultEmpty(code))
 }
 
 var defaultErrMsgMap sync.Map
 
-func getErrMsgDefaultEmpty(code ErrCode) string {
+func getDefaultErrMsgDefaultEmpty(code ErrCode) string {
 	msg, ok := defaultErrMsgMap.Load(code)
 	if !ok {
 		return ""
