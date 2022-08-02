@@ -33,24 +33,24 @@ func NewErrorWithMsg(code ErrCode, msg string) *Error {
 }
 
 func GetErrCode(err error) ErrCode {
-	if appErr, ok := err.(*Error); ok {
-		return appErr.code
+	if okErr, ok := ToError(err); ok {
+		return okErr.code
 	}
 
 	return ErrCodeUnknown
 }
 
 func GetErrMsg(err error) string {
-	if appErr, ok := err.(*Error); ok {
-		return appErr.msg
+	if okErr, ok := ToError(err); ok {
+		return okErr.msg
 	}
 
 	return err.Error()
 }
 
-func IsOkError(err error) bool {
-	_, ok := err.(*Error)
-	return ok
+func ToError(err error) (*Error, bool) {
+	okErr, ok := err.(*Error)
+	return okErr, ok
 }
 
 func NewError(code ErrCode) *Error {
