@@ -48,7 +48,7 @@ func GetErrMsg(err error) string {
 	return err.Error()
 }
 
-func IsOkErr(err error) bool {
+func IsOkError(err error) bool {
 	_, ok := err.(*Error)
 	return ok
 }
