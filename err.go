@@ -2,13 +2,14 @@ package apperrdef
 
 import (
 	"fmt"
+	"math"
 	"sync"
 )
 
 type ErrCode int32
 
 const (
-	ErrCodeUnknown ErrCode = -1
+	ErrCodeUnknown ErrCode = math.MinInt32
 )
 
 type Error struct {
