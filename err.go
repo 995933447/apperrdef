@@ -2,14 +2,13 @@ package apperrdef
 
 import (
 	"fmt"
-	"math"
 	"sync"
 )
 
 type ErrCode int32
 
 const (
-	ErrCodeUnknown ErrCode = math.MinInt32
+	ErrCodeNil ErrCode = 0
 )
 
 type Error struct {
@@ -29,6 +28,14 @@ func (e *Error) GetErrCode() ErrCode {
 	return e.code
 }
 
+func (e *Error) IsError(err error) bool {
+	okErr, ok := ToError(err)
+	if !ok {
+		return false
+	}
+	return okErr.GetErrCode() == e.GetErrCode()
+}
+
 func NewErrorWithMsg(code ErrCode, msg string) *Error {
 	return &Error{code: code, msg: msg}
 }
@@ -38,7 +45,7 @@ func GetErrCode(err error) ErrCode {
 		return okErr.code
 	}
 
-	return ErrCodeUnknown
+	return ErrCodeNil
 }
 
 func GetErrMsg(err error) string {
