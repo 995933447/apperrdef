@@ -28,7 +28,7 @@ func (e *Error) GetErrCode() ErrCode {
 	return e.code
 }
 
-func (e *Error) IsError(err error) bool {
+func (e *Error) IsErr(err error) bool {
 	okErr, ok := ToError(err)
 	if !ok {
 		return false
@@ -36,7 +36,7 @@ func (e *Error) IsError(err error) bool {
 	return okErr.GetErrCode() == e.GetErrCode()
 }
 
-func NewErrorWithMsg(code ErrCode, msg string) *Error {
+func NewErrWithMsg(code ErrCode, msg string) *Error {
 	return &Error{code: code, msg: msg}
 }
 
@@ -61,8 +61,8 @@ func ToError(err error) (*Error, bool) {
 	return okErr, ok
 }
 
-func NewError(code ErrCode) *Error {
-	return NewErrorWithMsg(code, getDefaultErrMsgDefaultEmpty(code))
+func NewErr(code ErrCode) *Error {
+	return NewErrWithMsg(code, getDefaultErrMsgDefaultEmpty(code))
 }
 
 var defaultErrMsgMap sync.Map
